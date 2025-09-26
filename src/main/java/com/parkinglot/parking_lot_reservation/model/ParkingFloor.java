@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"floorName"})})
 
+// Ensures unique floor names
 public class ParkingFloor {
 
     @Id
