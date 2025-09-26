@@ -26,7 +26,7 @@ WORKDIR /app
 COPY --from=build /app/target/parkinglot-reservation-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose port
-EXPOSE 8080
+EXPOSE 5050
 
 # JVM options
 ENV JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseContainerSupport -Djava.security.egd=file:/dev/./urandom"
