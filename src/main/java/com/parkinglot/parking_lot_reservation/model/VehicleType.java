@@ -9,6 +9,7 @@ public enum VehicleType {
     private final int ratePerHour;
 
     VehicleType(int ratePerHour) {
+        
         this.ratePerHour = ratePerHour;
     }
 

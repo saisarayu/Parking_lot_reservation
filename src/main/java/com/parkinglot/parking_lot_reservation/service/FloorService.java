@@ -6,6 +6,7 @@ import com.parkinglot.parking_lot_reservation.repository.ParkingFloorRepository;
 import org.springframework.stereotype.Service;
 
 // Service for managing ParkingFloor entities
+
 @Service
 public class FloorService {
 
