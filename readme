@@ -56,7 +56,7 @@ Build Tool: Maven
 
 Validation: Bean Validation (@Valid)
 
-Testing & API Exploration: Postman, Swagger
+Testing & API Exploration: Postman, Swagger(implemented but didn't updated in code)
 
 Deployment: Render
 
@@ -72,7 +72,7 @@ Database
 
 H2 in-memory database is used; no installation required.
 
-Access H2 console at: http://localhost:5050/h2-console
+Access H2 console at: http://localhost:8080/h2-console
 
 JDBC URL: jdbc:h2:mem:parkingdb
 
@@ -115,3 +115,17 @@ Optimistic Locking: Prevents concurrent booking conflicts.
 Pagination & Sorting: Efficient availability retrieval.
 
 Swagger/OpenAPI Integration: For interactive API documentation.
+
+10. Deployment Verification
+
+The backend is successfully deployed.
+Since there are no endpoints mapped to / (root URL) or GET endpoints for floors/reservations initially, accessing the root URL shows a 405 Whitelabel Error Page.
+
+To verify that the deployment is working, please use this valid GET endpoint:
+
+GET Endpoint:
+https://parking-lot-reservation-g4sr.onrender.com/slots
+
+If there’s no data yet, it will return an empty list ([]), which means the backend is running correctly.
+
+Note: POST endpoints like /floors and /reserve cannot be tested via browser directly. Use Postman or any REST client to send POST requests with required JSON payloads.
