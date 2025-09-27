@@ -6,6 +6,9 @@ COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
 
+# ✅ Give run permission to mvnw
+RUN chmod +x mvnw
+
 # Create src directory and copy your Java code
 RUN mkdir -p src
 COPY src ./src
