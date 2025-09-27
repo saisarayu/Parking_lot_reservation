@@ -1,131 +1,106 @@
-Parking Lot Reservation Backend
-1. Objective
+# Parking Lot Reservation Backend
 
-The Parking Lot Reservation backend manages a multi-floor parking facility, allowing administrators to manage floors and slots, and customers to reserve slots for specific time periods. The system ensures no double bookings and calculates parking fees based on vehicle type and duration.
+## Overview
 
-Built with Java 21, Spring Boot 3, and Maven, this backend provides RESTful APIs for easy frontend integration and efficient parking management.
+The Parking Lot Reservation Backend is a RESTful service built using **Java 17+** and **Spring Boot 3+**.
+It allows administrators to manage parking floors and slots, and enables customers to reserve slots for specific time ranges without conflicts. The system ensures no overlapping reservations and calculates parking fees based on vehicle type and duration.
 
-2. Features
+---
 
-Parking Floor Management: Create and manage multiple parking floors.
+## Features
 
-Slot Management: Add parking slots for each floor.
+* **Floor Management:** Create parking floors (`POST /floors`)
+* **Slot Management:** Create parking slots for each floor (`POST /slots`)
+* **Reservation:** Reserve a parking slot (`POST /reserve`)
 
-Reservation System: Reserve slots for specific time ranges without conflicts.
+  * Checks availability to prevent overlapping bookings
+  * Calculates cost based on vehicle type and duration
+* **Availability:** List available slots for a given time range (`GET /availability`)
+* **Reservation Details:** Fetch reservation by ID (`GET /reservations/{id}`)
+* **Cancellation:** Cancel a reservation (`DELETE /reservations/{id}`)
 
-Availability Check: List available slots for a given period.
+---
 
-Cost Calculation: Calculates fees based on vehicle type and duration (rounds up partial hours).
+## Business Rules
 
-Validation: Ensures vehicle numbers follow XX00XX0000 format.
+* Reservation start time must be before end time
+* Reservation duration cannot exceed 24 hours
+* Vehicle number format: `XX00XX0000` (e.g., KA05MH1234)
+* Partial hours are rounded up to the next full hour
 
-3. API Endpoints
-Method	Endpoint	Description
-POST	/floors	Create a parking floor
-POST	/slots	Create parking slots for a floor
-POST	/reserve	Reserve a slot for a time range
-GET	/availability	List available slots for a specified time
-GET	/reservations/{id}	Fetch reservation details
-DELETE	/reservations/{id}	Cancel a reservation
+---
 
-Additional endpoints can be added as needed for administration and reporting.
+## Tech Stack
 
-4. Business Rules
+* Java 17+
+* Spring Boot 3+
+* H2 Database (in-memory)
+* Maven
+* Bean Validation (`@Valid`)
+* VS Code
 
-Reservation start time must be before end time.
+---
 
-Maximum reservation duration: 24 hours.
+## Setup and Run Instructions
 
-Vehicle number format: XX00XX0000 (e.g., KA05MH1234).
+### Prerequisites
 
-Partial hours are charged as full hours.
+* Install Java 17+ and Maven
+* Use VS Code or any Java IDE
 
-System supports new vehicle types and rate adjustments.
+### Build and Run
 
-Vehicle Rates
-Vehicle Type	Rate Per Hour
-2-Wheeler	₹20
-4-Wheeler	₹30
-5. Technology Stack
-
-Backend: Java 21, Spring Boot 3+
-
-Database: H2 (in-memory)
-
-Build Tool: Maven
-
-Validation: Bean Validation (@Valid)
-
-Testing & API Exploration: Postman, Swagger(implemented but didn't updated in code)
-
-Deployment: Render
-
-6. Setup Instructions
-
-Clone the repository
-
+```bash
 git clone <repository-url>
 cd parkinglot-reservation
-
-
-Database
-
-H2 in-memory database is used; no installation required.
-
-Access H2 console at: http://localhost:8080/h2-console
-
-JDBC URL: jdbc:h2:mem:parkingdb
-
-Username: sa
-
-Password: (leave blank)
-
-Build & Run
-
 ./mvnw clean package -DskipTests
 ./mvnw spring-boot:run
+```
 
+Backend runs on: `http://localhost:8080/`
 
-Backend runs on: http://localhost:8080/
+### Database
 
-Test API
+H2 in-memory database; no installation required.
+Access H2 console at: `http://localhost:8080/h2-console`
 
-Use Postman or Swagger UI to interact with APIs.
+* JDBC URL: `jdbc:h2:mem:parkinglotdb`
+* Username: `sar`
+* Password: (leave blank)
 
-7. Deployment
+### Test API
 
-Application is deployed on Render.
+Use Postman to test all endpoints.
 
-Supports Docker deployment or standard Maven build:
+---
 
+## Deployment
+
+The backend is deployed on **Render**.
+Supports standard Maven build or Docker deployment:
+
+```bash
 java -jar target/parkinglot-reservation-0.0.1-SNAPSHOT.jar
+```
 
-8. Testing
+###  Deployment Verification
 
-Unit tests validate floor creation, slot reservation, and availability logic.
+* Visiting the root URL (`/`) shows the Spring Boot **White Label Error Page**.
+* This is expected since no endpoint is mapped to `/`.
 
-Ensures 90–100% code coverage.
+To verify that the backend is running, use this **GET endpoint**:
 
-API endpoints tested using Postman and Swagger.
+**GET Slots Endpoint:**
+[https://parking-lot-reservation-g4sr.onrender.com/slots](https://parking-lot-reservation-g4sr.onrender.com/slots)
 
-9. Optional Enhancements
+> If no slots exist yet, it will return an empty list (`[]`), confirming that the backend is working.
 
-Optimistic Locking: Prevents concurrent booking conflicts.
+> **Note:** POST endpoints like `/floors` and `/reserve` cannot be tested via browser directly. Use Postman or any REST client to send POST requests with required JSON payloads.
 
-Pagination & Sorting: Efficient availability retrieval.
+---
 
-Swagger/OpenAPI Integration: For interactive API documentation.
+## Notes About Homepage and Swagger UI
 
-10. Deployment Verification
-
-The backend is successfully deployed.
-Since there are no endpoints mapped to / (root URL) or GET endpoints for floors/reservations initially, accessing the root URL shows a 405 Whitelabel Error Page.
-
-To verify that the deployment is working, please use this valid GET endpoint:
-
-GET Endpoint:
-https://parking-lot-reservation-g4sr.onrender.com/slots
-
-If there’s no data yet, it will return an empty list ([]), which means the backend is running correctly.
-
-Note: POST endpoints like /floors and /reserve cannot be tested via browser directly. Use Postman or any REST client to send POST requests with required JSON payloads.
+* Currently, there is no homepage for the live deployment.
+* Swagger UI is available locally for API testing but is **not pushed to the deployed version**.
+* Future updates will include a proper homepage and live Swagger UI.
